@@ -21,4 +21,11 @@ def send_password_reset_email(user):
                                         user=user, token=token))
 
 def send_async_email(app, msg):
-    
+    with app.app_context():
+        mail.send()
+        
+def send_email(subject, sender, recipients, text_body):
+    msg = Message(subject, sender=sender, recipients=recipients)
+    msg.body = text_body
+    msg.html = html_body
+    Thread(target=send_async_mail, args=(app, msg)).start()
